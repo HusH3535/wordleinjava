@@ -1,14 +1,15 @@
 import javax.swing.*;
-import java.util.Random;
+import java.util.HashMap;
+//import java.util.Random;
 import java.util.Scanner;
 import java.awt.*;
 import javax.swing.border.Border;
 
 public class Main {
-    public static String word = "PENIS";
+    public static String word = "PEACH";
     public static char[] arr = {word.charAt(0),word.charAt(1),word.charAt(2),word.charAt(3),word.charAt(4)};
     public static Scanner kb = new Scanner(System.in);
-    public static Random ran = new Random();
+    //public static Random ran = new Random();
     public static JFrame window = new JFrame();
     public static JLabel label = new JLabel("WORDLE");
     public static JPanel[] guessesP = new JPanel[6];
@@ -17,10 +18,14 @@ public class Main {
     public static Color miss = new Color(100,100,100);
     public static Color present = new Color(180,180,40);
     public static Color correct = new Color(98,166,100);
+    public static HashMap<Character,Integer> map = new HashMap<>();
 
     public static void main(String[] args) {
 
-
+        for(int i = 0; i < 5; i++)
+        {
+            map.put(arr[i],i);
+        }
 
         window.setSize(1000,1000);
 
@@ -53,7 +58,7 @@ public class Main {
                 guesses[i][j].setOpaque(true);
                 guesses[i][j].setBounds(((j*10)+1)*PER,0,9*PER,(GUESSTHICKNESS)*PER);
                 guesses[i][j].setBorder(border);
-                guesses[i][j].setFont(new Font("roboto mono",Font.BOLD,34));;
+                guesses[i][j].setFont(new Font("roboto mono",Font.BOLD,34));
                 guessesP[i].add(guesses[i][j]);
 
 
@@ -101,7 +106,16 @@ public class Main {
 
         for (int i = 0; i < 5; i++) {
             guesses[attempt][i].setText(String.valueOf(guess[i]));
-            guesses[attempt][i].setBackground(miss);
+
+            if(map.containsKey(guess[i])){
+                guesses[attempt][i].setBackground(present);
+                if(map.get(guess[i])==i){
+                    guesses[attempt][i].setBackground(correct);
+                }
+            }
+            else {
+                guesses[attempt][i].setBackground(miss);
+            }
         }
     }
 
