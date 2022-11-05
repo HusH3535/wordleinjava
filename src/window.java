@@ -128,9 +128,23 @@ public class window extends JFrame implements KeyListener {
         }
         if(e.getKeyCode()==10&& game.currentLetter==5)
         {
-            testWord();
+            if(isWordValid()) testWord();
         }
 
+    }
+
+    private boolean isWordValid() {
+        String s = "";
+
+        for(int i =0; i<5; i++)
+        {
+            System.out.println("concat s with " + (guesses[game.numGuess][i]).getText());
+            s = s.concat((guesses[game.numGuess][i]).getText());
+        }
+
+        if(game.words.containsKey(s))return true;
+
+        return false;
     }
 
     private void pressKey(char keyChar) {
@@ -143,7 +157,6 @@ public class window extends JFrame implements KeyListener {
         }
 
     }
-    //TODO complete method
     public void testWord() {
 
         for(int i =0; i<5; i++)

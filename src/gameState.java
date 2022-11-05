@@ -8,6 +8,7 @@ import java.util.Random;
 public class gameState
 
 {
+    HashMap<String, Integer> words;
     HashMap<Character, Integer> map = new HashMap<>();
     String randomWord;
     Character[] currentGuess = new Character[5];
@@ -17,6 +18,7 @@ public class gameState
     gameState()
     {
         chooseWord();
+        loadGuessPool();
         for(int i =0; i<5;i++)
         {
             map.put(randomWord.charAt(i),i);
@@ -48,7 +50,25 @@ public class gameState
         } catch (Exception e) {
             // Handle this
         }
+    }
 
+    private void loadGuessPool()
+    {
+        try{
+            BufferedReader reader = new BufferedReader(new FileReader("C:/Users/Angel/IdeaProjects/wodle/src/guessPool.txt"));
+            String line = reader.readLine();
+            words = new HashMap<>();
+            while(line != null) {
+                String[] wordsLine = line.split(" ");
+                for(String word : wordsLine) {
+                    words.put(word,1);
+                }
+                line = reader.readLine();
+            }
+
+        } catch (Exception e) {
+            // Handle this
+        }
     }
 
 
