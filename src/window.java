@@ -1,23 +1,27 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.HashMap;
-import java.util.Scanner;
 
-public class window {
+public class window extends JFrame implements KeyListener {
 
     int windowSize = 1000;
     final int PER = windowSize/100;
     final int GUESSTHICKNESS = 9;
 
     //private static Random ran = new Random();
-    private  JFrame window = new JFrame();
     private  JLabel label = new JLabel("WORDLE");
     private  JPanel[] guessesP = new JPanel[6];
     private  JLabel[][] guesses = new JLabel[6][5];
     private  Border border = BorderFactory.createLineBorder(new Color(100,100,100),2);
 
-    public  HashMap<Character,Integer> map = new HashMap<>();
+    private Color empty = new Color(23,23,23);
+    private Color miss = new Color(100,100,100);
+    private  Color present = new Color(180,180,40);
+    private  Color correct = new Color(98,166,100);
+    private gameState game;
 
     public window()
     {
@@ -25,6 +29,8 @@ public class window {
         setUpWindow();
         setUpBoard();
         setUpTitle();
+        this.addKeyListener(this);
+        game = new gameState();
 
     }
 
@@ -49,7 +55,7 @@ public class window {
 
         for(int i = 0; i <6; i++)
         {
-            window.add(guessesP[i]);
+            this.add(guessesP[i]);
         }
 
     }
@@ -67,13 +73,13 @@ public class window {
     }
 
     private void setUpWindow(){
-        window.setSize(windowSize,windowSize);
-        window.setTitle("Wordle");
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setResizable(false);
-        window.setVisible(true);
-        window.getContentPane().setBackground(new Color(23,23,23));
-        window.setLayout(null);
+        this.setSize(windowSize,windowSize);
+        this.setTitle("Wordle");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
+        this.setVisible(true);
+        this.getContentPane().setBackground(new Color(23,23,23));
+        this.setLayout(null);
     }
 
     private void setUpTitle()
@@ -83,8 +89,70 @@ public class window {
         label.setFont(new Font("roboto mono",Font.BOLD,34));
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setVerticalAlignment(SwingConstants.NORTH);
-        label.setBounds(0,60,window.getWidth(),window.getHeight());
-        window.add(label);
+        label.setBounds(0,60,windowSize,windowSize);
+        this.add(label);
+    }
+
+    public void setTile(int i, int j, char value, Color color)
+    {
+        guesses[i][j].setText(String.valueOf(value));
+        guesses[i][j].setForeground(Color.white);
+        guesses[i][j].setBackground(color);
+    }
+
+    public void clearTile(int i, int j)
+    {
+        guesses[i][j].setText("");
+        guesses[i][j].setForeground(Color.white);
+        guesses[i][j].setBackground(empty);
+    }
+
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        pressKey(e.getKeyChar());
+        System.out.println(e.getKeyChar());
+
+
+    }
+
+    private void pressKey(char keyChar) {
+        if(game.canType()){
+            if( (keyChar >= 'a' && keyChar <= 'z') || (keyChar >= 'A' && keyChar <= 'Z')) {
+                setTile(game.numGuess, game.currentLetter, keyChar, empty);
+                game.currentGuess[game.currentLetter] = keyChar;
+                game.currentLetter++;
+            }
+        }
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if(e.getKeyCode()==8)
+        {
+            game.currentLetter--;
+            clearTile(game.numGuess,game.currentLetter);
+        }
+        if(e.getKeyCode()==10&& game.currentLetter==5)
+        {
+            testWord();
+        }
+
+    }
+    public void testWord() {
+        System.out.println("testing word");
+        for(int i =0; i<5; i++)
+        {
+            if(game.map. containsValue(game.currentGuess[i])){
+                setTile(game.numGuess,i,game.currentGuess[i],present);
+            }
+        }
     }
 
 

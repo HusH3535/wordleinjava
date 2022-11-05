@@ -1,23 +1,39 @@
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 public class gameState
 
-
 {
-
     Random rand = new Random();
+    HashMap<Character, Integer> map = new HashMap<>();
     String randomWord;
-    char[] word;
+    Character[] currentGuess = new Character[5];
+    int numGuess = 0;
+    int currentLetter = 0 ;
+
     gameState()
     {
         chooseWord();
+        for(int i =0; i<5;i++)
+        {
+            map.put(randomWord.charAt(i),i);
+        }
         System.out.println(randomWord);
-        window game = new window();
+    }
+
+    public boolean canType()
+    {
+        if(currentLetter<5)
+        {
+            return true;
+        }
+        return false;
     }
 
     private void chooseWord(){
@@ -40,5 +56,7 @@ public class gameState
         }
 
     }
+
+
 
 }
