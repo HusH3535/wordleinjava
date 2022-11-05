@@ -1,5 +1,3 @@
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -10,11 +8,10 @@ import java.util.Random;
 public class gameState
 
 {
-    Random rand = new Random();
     HashMap<Character, Integer> map = new HashMap<>();
     String randomWord;
     Character[] currentGuess = new Character[5];
-    int numGuess = 0;
+    public static int numGuess = 0;
     int currentLetter = 0 ;
 
     gameState()
@@ -29,10 +26,7 @@ public class gameState
 
     public boolean canType()
     {
-        if(currentLetter<5)
-        {
-            return true;
-        }
+        if(currentLetter<5)return true;
         return false;
     }
 
@@ -40,7 +34,7 @@ public class gameState
         try{
             BufferedReader reader = new BufferedReader(new FileReader("C:/Users/Angel/IdeaProjects/wodle/src/wordPool.txt"));
             String line = reader.readLine();
-            List<String> words = new ArrayList<String>();
+            List<String> words = new ArrayList<>();
             while(line != null) {
                 String[] wordsLine = line.split(" ");
                 for(String word : wordsLine) {

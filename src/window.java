@@ -111,8 +111,25 @@ public class window extends JFrame implements KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {
         pressKey(e.getKeyChar());
-        System.out.println(e.getKeyChar());
 
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if(e.getKeyCode()==8&&game.currentLetter>0)
+        {
+            game.currentLetter--;
+            clearTile(game.numGuess,game.currentLetter);
+        }
+        if(e.getKeyCode()==10&& game.currentLetter==5)
+        {
+            testWord();
+        }
 
     }
 
@@ -126,25 +143,6 @@ public class window extends JFrame implements KeyListener {
         }
 
     }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        if(e.getKeyCode()==8)
-        {
-            game.currentLetter--;
-            clearTile(game.numGuess,game.currentLetter);
-        }
-        if(e.getKeyCode()==10&& game.currentLetter==5)
-        {
-            testWord();
-        }
-
-    }
     //TODO complete method
     public void testWord() {
 
@@ -152,11 +150,36 @@ public class window extends JFrame implements KeyListener {
         {
             if(game.map.containsKey(game.currentGuess[i])){
                 setTile(game.numGuess,i,game.currentGuess[i],present);
-                if(game.map.get(game.currentGuess[i])==i){
+                if(game.currentGuess[i]==game.randomWord.charAt(i)){
                     setTile(game.numGuess,i,game.currentGuess[i],correct);
                 }
             }
         }
+        if(checkWin())displayVictory();
+        if(game.numGuess==5)displayLost();
+        game.numGuess++;
+        game.currentLetter=0;
+
+    }
+
+    private void displayLost() {
+        System.out.println("you lost");
+    }
+
+    private void displayVictory() {
+        System.out.println("you won");
+    }
+
+    public boolean checkWin()
+    {
+        for(int i =0;i<5;i++)
+        {
+            if(!guesses[game.numGuess][i].getBackground().equals(correct)){
+                return false;
+            }
+
+        }
+        return true;
 
     }
 
