@@ -16,7 +16,6 @@ public class window extends JFrame implements KeyListener {
     private  JPanel[] guessesP = new JPanel[6];
     private  JLabel[][] guesses = new JLabel[6][5];
     private  final Border border = BorderFactory.createLineBorder(new Color(100,100,100),2);
-
     private final Color empty = new Color(23,23,23);
     private final Color miss = new Color(100,100,100);
     private  final Color present = new Color(180,180,40);
@@ -138,7 +137,6 @@ public class window extends JFrame implements KeyListener {
 
         for(int i =0; i<5; i++)
         {
-            System.out.println("concat s with " + (guesses[game.numGuess][i]).getText());
             s = s.concat((guesses[game.numGuess][i]).getText());
         }
 
@@ -150,6 +148,8 @@ public class window extends JFrame implements KeyListener {
     private void pressKey(char keyChar) {
         if(game.canType()){
             if( (keyChar >= 'a' && keyChar <= 'z') || (keyChar >= 'A' && keyChar <= 'Z')) {
+                String s = String.valueOf(keyChar);
+                keyChar = s.toLowerCase().charAt(0);
                 setTile(game.numGuess, game.currentLetter, keyChar, empty);
                 game.currentGuess[game.currentLetter] = keyChar;
                 game.currentLetter++;
