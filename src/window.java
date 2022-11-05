@@ -3,24 +3,24 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.HashMap;
+
 
 public class window extends JFrame implements KeyListener {
 
-    int windowSize = 1000;
+    final int windowSize = 1000;
     final int PER = windowSize/100;
     final int GUESSTHICKNESS = 9;
 
     //private static Random ran = new Random();
-    private  JLabel label = new JLabel("WORDLE");
+    private  final JLabel label = new JLabel("WORDLE");
     private  JPanel[] guessesP = new JPanel[6];
     private  JLabel[][] guesses = new JLabel[6][5];
-    private  Border border = BorderFactory.createLineBorder(new Color(100,100,100),2);
+    private  final Border border = BorderFactory.createLineBorder(new Color(100,100,100),2);
 
-    private Color empty = new Color(23,23,23);
-    private Color miss = new Color(100,100,100);
-    private  Color present = new Color(180,180,40);
-    private  Color correct = new Color(98,166,100);
+    private final Color empty = new Color(23,23,23);
+    private final Color miss = new Color(100,100,100);
+    private  final Color present = new Color(180,180,40);
+    private  final Color correct = new Color(98,166,100);
     private gameState game;
 
     public window()
@@ -145,14 +145,19 @@ public class window extends JFrame implements KeyListener {
         }
 
     }
+    //TODO complete method
     public void testWord() {
-        System.out.println("testing word");
+
         for(int i =0; i<5; i++)
         {
-            if(game.map. containsValue(game.currentGuess[i])){
+            if(game.map.containsKey(game.currentGuess[i])){
                 setTile(game.numGuess,i,game.currentGuess[i],present);
+                if(game.map.get(game.currentGuess[i])==i){
+                    setTile(game.numGuess,i,game.currentGuess[i],correct);
+                }
             }
         }
+
     }
 
 
